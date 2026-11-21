@@ -93,12 +93,19 @@ local function hsl_to_hex(h, s, l)
 	local x = c * (1 - math.abs((h / 60) % 2 - 1))
 	local m = l - c / 2
 	local r, g, b
-	if h < 60 then r, g, b = c, x, 0
-	elseif h < 120 then r, g, b = x, c, 0
-	elseif h < 180 then r, g, b = 0, c, x
-	elseif h < 240 then r, g, b = 0, x, c
-	elseif h < 300 then r, g, b = x, 0, c
-	else r, g, b = c, 0, x end
+	if h < 60 then
+		r, g, b = c, x, 0
+	elseif h < 120 then
+		r, g, b = x, c, 0
+	elseif h < 180 then
+		r, g, b = 0, c, x
+	elseif h < 240 then
+		r, g, b = 0, x, c
+	elseif h < 300 then
+		r, g, b = x, 0, c
+	else
+		r, g, b = c, 0, x
+	end
 	return string.format("#%02X%02X%02X",
 		math.floor((r + m) * 255 + 0.5), math.floor((g + m) * 255 + 0.5), math.floor((b + m) * 255 + 0.5))
 end
@@ -143,12 +150,13 @@ function M.get(mode)
 	p.light_grey = m.on_surface_variant
 	p.grey = m.outline
 
+	-- Accents: use matugen's custom colors when present (blended with the
+	-- wallpaper by matugen itself), otherwise harmonize the seed ourselves.
 	for _, name in ipairs(accents) do
-		p[name] = harmonize(ref[name], m.primary)
+		p[name] = m[name] or harmonize(ref[name], name == "red" and m.error or m.primary)
 	end
-	p.red = harmonize(ref.red, m.error)
-	p.bg_blue = p.blue
-	p.bg_yellow = p.yellow
+	p.bg_blue = util.blend(p.blue, p.fg, 0.85)
+	p.bg_yellow = util.blend(p.yellow, p.fg, 0.85)
 	for _, name in ipairs({ "cyan", "red", "yellow", "purple" }) do
 		p["dark_" .. name] = util.blend(p[name], p.bg0, 0.45)
 	end
