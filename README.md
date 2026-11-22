@@ -1,8 +1,9 @@
 # matugen.nvim
 
 Neovim colorscheme generated from your [matugen](https://github.com/InioX/matugen) (Material You) palette.
-Every color comes from matugen: surfaces and text from the Material roles, accents (`red`, `green`, `blue`, ...)
-from matugen custom colors, which it blends toward your wallpaper so they stay recognisable but match your desktop.
+Surfaces and text come from the Material roles. Accent colors (`red`, `green`, `blue`, ...) keep the vivid look of
+the fallback palette, but their hues follow your colorscheme: the scheme's own `error`, `primary`, `secondary` and
+`tertiary` colors are matched to the closest accent slot, and the rest drift slightly toward `primary`.
 The `dark_*`, `diff_*` and `bg_blue`/`bg_yellow` colors are derived from those.
 
 Follows `vim.o.background` (dark/light). If matugen hasn't generated anything yet, a built-in fallback palette is used.
@@ -20,19 +21,6 @@ output_path = '~/.local/state/nvim/matugen/palette.lua'
 - `input_path` is the template shipped with this plugin (adjust if you install elsewhere).
 - `output_path` is `vim.fn.stdpath("state") .. "/matugen/palette.lua"`, where the plugin looks by default.
   To write somewhere else, set `vim.g.matugen_palette_path = "/your/path/palette.lua"` before loading the colorscheme.
-
-The template also needs the accent colors declared as matugen custom colors (matugen blends them with your wallpaper):
-
-```toml
-[config.custom_colors]
-red = "#e86671"
-green = "#98c379"
-yellow = "#e5c07b"
-orange = "#d19a66"
-blue = "#61afef"
-cyan = "#56b6c2"
-purple = "#c678dd"
-```
 
 Then run matugen as usual, e.g. `matugen image /path/to/wallpaper.png`.
 
