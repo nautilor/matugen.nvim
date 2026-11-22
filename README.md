@@ -1,9 +1,9 @@
 # matugen.nvim
 
 Neovim colorscheme generated from your [matugen](https://github.com/InioX/matugen) (Material You) palette.
-Surfaces and text come from the Material roles. Accent colors (`red`, `green`, `blue`, ...) keep the vivid look of
-the fallback palette, but their hues follow your colorscheme: the scheme's own `error`, `primary`, `secondary` and
-`tertiary` colors are matched to the closest accent slot, and the rest drift slightly toward `primary`.
+Surfaces and text come from the Material roles. Accent colors (`red`, `green`, `blue`, ...) are matugen custom
+colors used as-is: declare them in `[config.custom_colors]`, or inject a colorscheme's real hues into them
+(e.g. a script that runs `matugen json` with overrides), so the theme matches that scheme.
 The `dark_*`, `diff_*` and `bg_blue`/`bg_yellow` colors are derived from those.
 
 Follows `vim.o.background` (dark/light). If matugen hasn't generated anything yet, a built-in fallback palette is used.
