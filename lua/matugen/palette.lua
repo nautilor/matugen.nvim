@@ -129,6 +129,9 @@ local function load_file()
 	return ok and type(data) == "table" and data or nil
 end
 
+-- Max degrees an accent hue may drift from its seed toward the wallpaper.
+local max_hue_shift = 12
+
 local accents = { "purple", "green", "orange", "blue", "yellow", "cyan", "red" }
 
 ---@param mode? "dark"|"light" defaults to vim.o.background
@@ -152,8 +155,15 @@ function M.get(mode)
 
 	-- Accents: use matugen's custom colors when present (blended with the
 	-- wallpaper by matugen itself), otherwise harmonize the seed ourselves.
+	-- Matugen's custom colors are pastel tone-80 shades that all look alike, so
+	-- keep only their hue (clamped near the seed hue) and take saturation and
+	-- lightness from the seed. Accents stay distinct, like the fallback palette.
 	for _, name in ipairs(accents) do
-		p[name] = m[name] or harmonize(ref[name], name == "red" and m.error or m.primary)
+		local sh, ss, sl = hex_to_hsl(seeds[mode][name])
+		local h = hex_to_hsl(m[name] or harmonize(seeds[mode][name], name == "red" and m.error or m.primary))
+		local diff = ((h - sh + 180) % 360) - 180
+		diff = math.max(-max_hue_shift, math.min(max_hue_shift, diff))
+		p[name] = hsl_to_hex((sh + diff) % 360, ss, sl)
 	end
 	p.bg_blue = util.blend(p.blue, p.fg, 0.85)
 	p.bg_yellow = util.blend(p.yellow, p.fg, 0.85)
