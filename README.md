@@ -94,6 +94,29 @@ require("matugen").setup({
 })
 ```
 
+## Syntax roles (optional)
+
+Accent colors alone can't reproduce how another colorscheme assigns them (gruvbox.nvim has red keywords and green
+functions, tokyonight has purple keywords and blue functions). A palette generator can therefore also write
+`vim.fn.stdpath("state") .. "/matugen/roles.lua"` (override with `vim.g.matugen_roles_path`):
+
+```lua
+return {
+  background = "#1d2021", -- must equal the palette's background, otherwise the file is ignored
+  roles = {
+    keyword = "#fb4934",
+    ["function"] = { fg = "#b8bb26", bold = true },
+    -- keyword_function, keyword_return, keyword_import, keyword_operator, conditional, loop, exception,
+    -- operator, function_call, function_builtin, method, method_call, constructor, type, type_builtin,
+    -- variable, variable_builtin, parameter, property, constant, constant_builtin, number, boolean, string,
+    -- string_escape, regexp, module, label, attribute, tag, tag_attribute, tag_delimiter, comment,
+    -- punctuation_delimiter, punctuation_bracket, punctuation_special, preproc, macro
+  },
+}
+```
+
+Roles you leave out keep the derived defaults. Each value is `"#rrggbb"` or `{ fg = ..., bold/italic/underline = true }`.
+
 ## Reloading when the wallpaper changes
 
 After matugen regenerates the palette, run `:colorscheme matugen` in open Neovim instances.
